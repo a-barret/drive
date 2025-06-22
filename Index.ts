@@ -3,10 +3,10 @@
 // To run the JS: "node [filname]" (The javascript file is what is actually run)
 // Use "ts-node [filename]" to run the typesript file directly
 
-import * as readline from 'readline';
-import { Vehicle } from "./Vehicle";
+import * as readline from 'readline';  // Import Node.js readline module for CLI input
+import { Vehicle } from "./Vehicle";   // Import the Vehicle class
 
-let garage: Vehicle[] = [];
+let garage: Vehicle[] = []; // Array to store all vehicles
 
 const rl = readline.createInterface({
     input: process.stdin,
@@ -14,43 +14,39 @@ const rl = readline.createInterface({
 });
 
 function mainMenu() {
-    let invalidInput = true;
-    while (invalidInput) {
-        console.log(`
---- VEHICLE GARAGE MENU ---
+// Presents a list of actions the user can take to manage their vehicles
+    console.log(`
+--- DRIVE PROGRAM MENU ---
 1. Add a vehicle
 2. View a vehicle
 3. Add an entry to a vehicle
 4. Exit
 `);
-        rl.question('Select an option: ', (answer) => {
-            switch (answer.trim()) {
-                case '1':
-                    addVehicle();
-                    invalidInput = false;
-                    break;
-                case '2':
-                    viewVehicle();
-                    invalidInput = false;
-                    break;
-                case '3':
-                    addEntryToVehicle();
-                    invalidInput = false;
-                    break;
-                case '4':
-                    rl.close();
-                    invalidInput = false;
-                    break;
-                default:
-                    console.log('Invalid option.');
-                    invalidInput = true;
-                    break;
-            }
-        });
-    }
+    rl.question('Select an option: ', (answer) => {
+    // Prompt user for menu selection
+        switch (answer.trim()) {
+            case '1':
+                addVehicle();
+                break;
+            case '2':
+                viewVehicle();
+                break;
+            case '3':
+                addEntryToVehicle();
+                break;
+            case '4':
+                rl.close();
+                break;
+            default:
+                console.log('Invalid option.');
+                mainMenu();
+        }
+    });
 }
 
+
 function addVehicle() {
+// This function gathers a series of details from the user and creates a vehicle object with those attributes
     rl.question('Enter year: ', (yearStr) => {
         rl.question('Enter make: ', (make) => {
             rl.question('Enter model: ', (model) => {
@@ -73,7 +69,9 @@ function addVehicle() {
     });
 }
 
+
 function viewVehicle() {
+// This function will get the user's selection of a vehicle and then display its details
     if (garage.length === 0) {
         console.log('No vehicles in garage.');
         return mainMenu();
@@ -91,9 +89,10 @@ function viewVehicle() {
 }
 
 function addEntryToVehicle() {
+// Prompts the user to select a vehicle and then adds a logbook entry to it
     if (garage.length === 0) {
         console.log('No vehicles in garage.');
-        return mainMenu();
+        return mainMenu(); 
     }
     listVehicles();
     rl.question('Select vehicle number to add entry: ', (numStr) => {
@@ -122,8 +121,11 @@ function addEntryToVehicle() {
 }
 
 function listVehicles() {
-    for (const [index, vehicle] of garage.entries()) {
-        console.log(`${index + 1}. ${vehicle['display']().split('\n')[1]}`); // Show year/make/model line
+// List all vehicles in the garage with a number for selection and their name
+    let count = 1;
+    for (const vehicle of garage) {
+        console.log(`${count}. ${vehicle.getVehicleName()}`);
+        count++;
     }
 }
 
