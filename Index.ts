@@ -46,7 +46,7 @@ function mainMenu() {
 
 
 function addVehicle() {
-// This function gathers a series of details from the user and creates a vehicle object with those attributes
+// This function collects a series of details from the user and creates a vehicle object with those attributes
     rl.question('Enter year: ', (yearStr) => {
         rl.question('Enter make: ', (make) => {
             rl.question('Enter model: ', (model) => {
